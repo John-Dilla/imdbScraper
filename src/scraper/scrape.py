@@ -3,10 +3,34 @@ import re
 from bs4 import BeautifulSoup
 
 class Scraper:
-    """This private class is the Logger instance SingletonObject holds."""
+    """This class provides the scraping methods."""
     def __init__(self) -> None:
-        self.headers = headers = {'user-agent': 'my-app/0.0.1'}
+        self._headers = {'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0'}
 
     def getTopActors(self, url: str):
-        r = requests.get(url, headers = self.headers)
-        print(r.text)
+        r = requests.get(url, headers = self._headers)
+        soup = BeautifulSoup(r.text, 'html.parser')
+        list = soup.find_all("h3",{"class": "lister-item-header"})
+
+        dictTop50 = []
+        print(list)
+        for item in list:
+            #print("Top:{0} ID:{1} Name:{2}".format(item.span.getText(),
+                #item.a.get('href'), item.a.getText().lstrip()))
+            tempDict = dict()
+            tempDict['top'] = item.span.getText().rstrip()
+            tempDict['id'] = item.a.get('href').split("?")[0]
+            tempDict['name'] = item.a.getText().lstrip().rstrip("\n")
+            dictTop50.append(tempDict)
+
+        print(dictTop50)
+
+    def getBio(self, actorID: str):
+        url = "https://www.imdb.com/" + actorID + "/bio?ref_=nm_ov_bio_sm"
+        
+        r = requests.get(url, headers = self._headers)
+        soup = BeautifulSoup(r.text, 'html.parser')
+        list = soup.find_all("t3", {"class": "dataTable labelValueTable"})
+
+        for item in list:
+            print(item)
