@@ -27,10 +27,18 @@ class Scraper:
 
     def getBio(self, actorID: str):
         url = "https://www.imdb.com/" + actorID + "/bio?ref_=nm_ov_bio_sm"
-        
         r = requests.get(url, headers = self._headers)
         soup = BeautifulSoup(r.text, 'html.parser')
-        list = soup.find_all("t3", {"class": "dataTable labelValueTable"})
+        list = soup.find_all(id='overviewTable')
 
         for item in list:
-            print(item)
+            #Born
+            print(item.time.get('datetime'))
+            print(item.time.next_sibling.next_sibling.getText())
+            #Birth Name
+
+            temp = item.find_all("td")
+            for x in temp:
+                print(str(x).strip("\n"))
+
+
