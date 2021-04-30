@@ -13,30 +13,30 @@ class Scraper:
         list = soup.find_all("h3",{"class": "lister-item-header"})
 
         dictTop50 = []
+
         for item in list:
             #print("Top:{0} ID:{1} Name:{2}".format(item.span.getText(),
                 #item.a.get('href'), item.a.getText().lstrip()))
             tempDict = dict()
             tempDict['top'] = item.span.getText().rstrip()
-            tempDict['id'] = item.a.get('href').split("?")[0]
+            tempDict['id'] = item.a.get('href').split("?")[0].replace("/name/", "")
             tempDict['name'] = item.a.getText().lstrip().rstrip("\n")
-            print(tempDict)
             dictTop50.append(tempDict)
 
         return dictTop50
 
     def getBio(self, actorID: str):
-        url = "https://www.imdb.com/" + actorID + "/bio?ref_=nm_ov_bio_sm"
+        url = "https://www.imdb.com/name/" + actorID + "/bio?ref_=nm_ov_bio_sm"
         r = requests.get(url, headers = self._headers)
         soup = BeautifulSoup(r.text, 'html.parser')
 
-        birthPlace = ""
-        birthDate = ""
-        birthName = ""
-        nickName = ""
-        height = ""
-        bio = ""
-        spouse = ""
+        birthPlace = None
+        birthDate = None
+        birthName = None
+        nickName = None
+        height = None
+        bio = None
+        spouse = None
         
         ### Info about birth gets scraped
         temp = soup.find_all('a', {'href':re.compile(r"search/name[/|]{,1}\?birth_place")})
@@ -53,14 +53,11 @@ class Scraper:
         for x in table:
             if x.td.text == "Birth Name":
                 birthName = x.td.next_sibling.text.strip('\n')
-                #print(birthName)
             if x.td.text == "Nickname":
                 nickName = x.td.next_sibling.text.strip('\n')
-                #print(nickName)
             if x.td.text == "Height":
                 #print(x.td.next_sibling.next_sibling.text)
                 height = x.td.next_sibling.next_sibling.text.strip('\n')
-                #print(height)
 
         ### Info about bio gets scraped
         temp = soup.find('div', {'class' : "soda odd"})
@@ -91,3 +88,42 @@ class Scraper:
 
 
         return actorDict
+
+    def getFilmography(self, actorID: str):
+        url = "https://www.imdb.com/filmosearch/?sort=year&explore=title_type&role=" + actorID + "&ref_=nm_flmg_shw_2"
+        r = requests.get(url, headers = self._headers)
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        ranking = None
+        movieName = None
+        movieNameSuffix = None
+        genre = None
+        rating = None
+        plot = None
+
+
+        temp = soup.find_all("div",{"class": "lister-item-content"})
+        for x in temp:
+            if x.h3.small:
+                movieNameSuffix = x.h3.small.text.strip() + " " + x.h3.small.find_next('a').text.strip()
+                #print(movieNameSuffix)
+            if x.find("span", {"class": "genre"}):
+                genre = x.find("span", {"class": "genre"})
+                #print("Genre:",genre.text.strip())
+
+            if x.find("div", {"class": "inline-block ratings-imdb-rating"}):
+                rating = x.find("div", {"class": "inline-block ratings-imdb-rating"}).text.strip()
+                #print("Rating:",rating)
+            if x.find("p", {"class": ""}):
+                plot = x.find("p", {"class": ""}).text.strip()
+                # Edge case where there is no existing plot
+                if plot == "Add a Plot":
+                    plot = None
+                print("Plot:",plot)
+
+            print("\n")
+
+    def getAwards(self, actorID: str):
+        url = "https://www.imdb.com/name/" + actorID + "/awards?ref_=nm_ql_2"
+        r = requests.get(url, headers = self._headers)
+        soup = BeautifulSoup(r.text, 'html.parser')

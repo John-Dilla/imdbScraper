@@ -5,11 +5,15 @@ class Controller:
         self.topUrl = url
     def structure(self):
         imdbScraper = Scraper()
-        listTopFifty = imdbScraper.getTopActors(self.topUrl)
-        for x in listTopFifty:
-            print(x["id"])
-            imdbScraper.getBio(x["id"])
+        #listTopFifty = imdbScraper.getTopActors(self.topUrl)
+        #for x in listTopFifty:
+        #    print(x["id"])
+            #imdbScraper.getBio(x["id"])
         
-        #imdbScraper.getBio("name/nm0001337")
-        #imdbScraper.getBio("name/nm3910031")
-        #imdbScraper.getBio("name/nm0842332")
+        #imdbScraper.getBio("nm0001337")
+        #imdbScraper.getBio("nm3910031")
+        #imdbScraper.getBio("nm0842332")
+
+        imdbScraper.getFilmography("nm0001337")
+        #imdbScraper.getFilmography("nm3910031")
+        #imdbScraper.getFilmography("nm0842332")
