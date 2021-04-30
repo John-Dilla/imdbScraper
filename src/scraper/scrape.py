@@ -5,7 +5,9 @@ from bs4 import BeautifulSoup
 class Scraper:
     """This class provides the scraping methods."""
     def __init__(self) -> None:
-        self._headers = {'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0'}
+        self._headers = {'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0',
+                        #'accept-language': 'en-US'}
+                        'accept-language': 'de-DE'}
 
     def getTopActors(self, url: str):
         r = requests.get(url, headers = self._headers)
@@ -97,6 +99,8 @@ class Scraper:
         ranking = None
         movieName = None
         movieNameSuffix = None
+        certificate = None
+        runtime = None
         genre = None
         rating = None
         plot = None
@@ -104,13 +108,23 @@ class Scraper:
 
         temp = soup.find_all("div",{"class": "lister-item-content"})
         for x in temp:
-            if x.h3.small:
+            ranking = x.h3.span.text.strip("\n")
+            print(ranking)
+            movieName = x.h3.a.text.strip()
+            print("Name:",movieName)
+            if x.h3.small:                
                 movieNameSuffix = x.h3.small.text.strip() + " " + x.h3.small.find_next('a').text.strip()
-                #print(movieNameSuffix)
+                #print("movieNameSuffix", movieNameSuffix)
+            if x.p.find("span", {"class": "certificate"}):
+                #This changes based on the 'accept-language' in the Request-Header
+                certificate = x.find("span", {"class": "certificate"}).text.strip()
+                #print("certificate:", certificate)
+            if x.find("span", {"class": "runtime"}):
+                runtime = x.find("span", {"class": "runtime"}).text.strip()
+                #print("runtime:", runtime)
             if x.find("span", {"class": "genre"}):
-                genre = x.find("span", {"class": "genre"})
-                #print("Genre:",genre.text.strip())
-
+                genre = x.find("span", {"class": "genre"}).text.strip()
+                #print("Genre:",genre)
             if x.find("div", {"class": "inline-block ratings-imdb-rating"}):
                 rating = x.find("div", {"class": "inline-block ratings-imdb-rating"}).text.strip()
                 #print("Rating:",rating)
@@ -119,9 +133,7 @@ class Scraper:
                 # Edge case where there is no existing plot
                 if plot == "Add a Plot":
                     plot = None
-                print("Plot:",plot)
-
-            print("\n")
+                #print("Plot:",plot)
 
     def getAwards(self, actorID: str):
         url = "https://www.imdb.com/name/" + actorID + "/awards?ref_=nm_ql_2"
