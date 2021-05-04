@@ -1,5 +1,7 @@
 import requests
 import re
+import csv
+import pandas as pd
 from bs4 import BeautifulSoup
 
 class Scraper:
@@ -14,7 +16,7 @@ class Scraper:
         soup = BeautifulSoup(r.text, 'html.parser')
         list = soup.find_all("h3",{"class": "lister-item-header"})
 
-        dictTop50 = []
+        listTop50 = []
 
         for item in list:
             #print("Top:{0} ID:{1} Name:{2}".format(item.span.getText(),
@@ -23,9 +25,9 @@ class Scraper:
             tempDict['top'] = item.span.getText().rstrip()
             tempDict['id'] = item.a.get('href').split("?")[0].replace("/name/", "")
             tempDict['name'] = item.a.getText().lstrip().rstrip("\n")
-            dictTop50.append(tempDict)
+            listTop50.append(tempDict)
 
-        return dictTop50
+        return listTop50
 
     def getBio(self, actorID: str):
         url = "https://www.imdb.com/name/" + actorID + "/bio?ref_=nm_ov_bio_sm"
@@ -41,7 +43,7 @@ class Scraper:
         spouse = None
         
         ### Info about birth gets scraped
-        temp = soup.find_all('a', {'href':re.compile(r"search/name[/|]{,1}\?birth_place")})
+        temp = soup.find_all('a', {'href': re.compile(r"search/name[/|]{,1}\?birth_place")})
         if temp:
             birthPlace = temp[0].text
             temp = soup.find(id='overviewTable')
@@ -78,16 +80,12 @@ class Scraper:
                     spouse = spouse + " ".join(y.text.split()) + " "
                 #print(spouse)
         
-        
-        
         actorDict = {'Place of birth': birthPlace, 'Date of birth': birthDate,
         'Birthname': birthName, 'Nickname': nickName,
         'Height': height, 'Bio': bio, 'Spouse': spouse}
         
-        
         #for key, value in actorDict.items():
         #    print(key, ' : ', value)
-
 
         return actorDict
 
@@ -105,29 +103,27 @@ class Scraper:
         rating = None
         plot = None
 
+        listFilmography = []
+        filmoDict = dict()
 
         temp = soup.find_all("div",{"class": "lister-item-content"})
         for x in temp:
             ranking = x.h3.span.text.strip("\n")
-            print(ranking)
+            #print(ranking)
             movieName = x.h3.a.text.strip()
-            print("Name:",movieName)
+            #print("Name:",movieName)
             if x.h3.small:                
                 movieNameSuffix = x.h3.small.text.strip() + " " + x.h3.small.find_next('a').text.strip()
                 #print("movieNameSuffix", movieNameSuffix)
             if x.p.find("span", {"class": "certificate"}):
                 #This changes based on the 'accept-language' in the Request-Header
                 certificate = x.find("span", {"class": "certificate"}).text.strip()
-                #print("certificate:", certificate)
             if x.find("span", {"class": "runtime"}):
                 runtime = x.find("span", {"class": "runtime"}).text.strip()
-                #print("runtime:", runtime)
             if x.find("span", {"class": "genre"}):
                 genre = x.find("span", {"class": "genre"}).text.strip()
-                #print("Genre:",genre)
             if x.find("div", {"class": "inline-block ratings-imdb-rating"}):
                 rating = x.find("div", {"class": "inline-block ratings-imdb-rating"}).text.strip()
-                #print("Rating:",rating)
             if x.find("p", {"class": ""}):
                 plot = x.find("p", {"class": ""}).text.strip()
                 # Edge case where there is no existing plot
@@ -135,7 +131,69 @@ class Scraper:
                     plot = None
                 #print("Plot:",plot)
 
+            filmoDict = {'Ranking': ranking, 'Name': movieName,
+            'Movie suffix': movieNameSuffix, 'Nickname': certificate,
+            'Runtime': runtime, 'Genre': genre, 'Rating': rating, 'Plot': plot}
+            listFilmography.append(filmoDict)
+
+        return filmoDict
+
     def getAwards(self, actorID: str):
         url = "https://www.imdb.com/name/" + actorID + "/awards?ref_=nm_ql_2"
         r = requests.get(url, headers = self._headers)
         soup = BeautifulSoup(r.text, 'html.parser')
+
+        award = None
+        awardYear = None
+        awardOutcome = None
+        awardDescription = None
+
+        listAwards = []
+        awardDict = dict()
+
+        temp = soup.find_all('table', {"class": "awards"})
+        
+        for x in temp:
+            #Award
+            award = x.find_previous('h3').text.strip()
+
+            years = x.find_all('tr')
+            for y in years:
+                awardExists = y.find('td', {"class": "award_year"})
+
+                #Edge-Case for being nominated in multiple categories
+                #would run into a None type if not checked
+                if awardExists:
+                    awardYear = awardExists.text.strip()
+                    awardOutcome = y.find('td', {"class": "award_outcome"}).b.text.strip()
+                
+                #else:
+                    #print("Year:", awardYear)
+                    #print("Outcome:", awardOutcome)
+
+                awardDescription_temp = y.find('td', {"class": "award_description"})
+                #Description 
+                awardDescription = awardDescription_temp.next_element.strip()
+                #Movie + year 
+                if awardDescription_temp.find_next('a'):
+                    mov = awardDescription_temp.find_next('a').text.strip()
+                    year = awardDescription_temp.find_next('span').text.strip()
+                    awardDescription = awardDescription + "\n" + mov + year
+                    #print("###",awardDescription,"###")
+
+
+                print(award)
+                awardDict = {'Award': award, 'Year': awardYear,
+                    'Outcome': awardOutcome, 'Description': awardDescription}
+
+                #Generating the list
+                listAwards.append(awardDict)
+
+        dataFrame = pd.DataFrame(listAwards)
+        #print(dataFrame)
+        dataFrame.to_csv("sample.csv", mode='a', sep=';')
+        
+        return listAwards
+
+    def getGenres(self, actorID: str):
+        print()
