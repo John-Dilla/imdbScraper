@@ -1,8 +1,9 @@
 import requests
 import re
-import csv
 import pandas as pd
 from bs4 import BeautifulSoup
+
+import src.utility.file as f
 
 class Scraper:
     """This class provides the scraping methods."""
@@ -33,6 +34,8 @@ class Scraper:
         url = "https://www.imdb.com/name/" + actorID + "/bio?ref_=nm_ov_bio_sm"
         r = requests.get(url, headers = self._headers)
         soup = BeautifulSoup(r.text, 'html.parser')
+
+        listBio = []
 
         birthPlace = None
         birthDate = None
@@ -72,22 +75,21 @@ class Scraper:
         temp = soup.find(id='tableSpouses')
         ### check if actor has spouses
         if temp:
-            temp = temp.find_all('tr')
-            for x in temp:
-                #print(x.td.a.text, "--------------> Spouse")
-                entries = x.find_all('td')
-                for y in entries:
-                    spouse = spouse + " ".join(y.text.split()) + " "
-                #print(spouse)
+            #temp = temp.find_all('tr')
+            spouseName = temp.find('a').text.strip()
+            spouseInfo = temp.find_next('td').find_next('td').text.strip()
+            spouseInfo = spouseInfo.strip("\n")
+            print("###",spouseInfo, "###")
+            spouse = spouseName + " " + spouseInfo
         
         actorDict = {'Place of birth': birthPlace, 'Date of birth': birthDate,
         'Birthname': birthName, 'Nickname': nickName,
         'Height': height, 'Bio': bio, 'Spouse': spouse}
         
-        #for key, value in actorDict.items():
-        #    print(key, ' : ', value)
+        listBio.append(actorDict)
+        dataFrame = pd.DataFrame(listBio)
+        f.writeToDirectory("biography", actorID, dataFrame)
 
-        return actorDict
 
     def getFilmography(self, actorID: str):
         url = "https://www.imdb.com/filmosearch/?sort=year&explore=title_type&role=" + actorID + "&ref_=nm_flmg_shw_2"
@@ -136,7 +138,8 @@ class Scraper:
             'Runtime': runtime, 'Genre': genre, 'Rating': rating, 'Plot': plot}
             listFilmography.append(filmoDict)
 
-        return filmoDict
+        dataFrame = pd.DataFrame(listFilmography)
+        f.writeToDirectory("filmography", actorID, dataFrame)
 
     def getAwards(self, actorID: str):
         url = "https://www.imdb.com/name/" + actorID + "/awards?ref_=nm_ql_2"
@@ -178,9 +181,8 @@ class Scraper:
                 if awardDescription_temp.find_next('a'):
                     mov = awardDescription_temp.find_next('a').text.strip()
                     year = awardDescription_temp.find_next('span').text.strip()
-                    awardDescription = awardDescription + "\n" + mov + year
+                    awardDescription = awardDescription + " - " + mov + " " + year
                     #print("###",awardDescription,"###")
-
 
                 print(award)
                 awardDict = {'Award': award, 'Year': awardYear,
@@ -190,10 +192,7 @@ class Scraper:
                 listAwards.append(awardDict)
 
         dataFrame = pd.DataFrame(listAwards)
-        #print(dataFrame)
-        dataFrame.to_csv("sample.csv", mode='a', sep=';')
-        
-        return listAwards
+        f.writeToDirectory("awards", actorID, dataFrame)
 
     def getGenres(self, actorID: str):
         print()

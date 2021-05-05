@@ -11,7 +11,7 @@ class Controller:
             imdbScraper.getBio(x["id"])
             imdbScraper.getFilmography(x["id"])"""
         
-        #imdbScraper.getBio("nm0001337")
+        imdbScraper.getBio("nm0001337")
         #imdbScraper.getBio("nm3910031")
         #imdbScraper.getBio("nm0842332")
 
@@ -19,4 +19,4 @@ class Controller:
         #imdbScraper.getFilmography("nm3910031")
         #imdbScraper.getFilmography("nm0842332")
 
-        imdbScraper.getAwards("nm0001337")
+        #imdbScraper.getAwards("nm0001337")
