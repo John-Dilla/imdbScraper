@@ -7,16 +7,13 @@ class Controller:
         imdbScraper = Scraper()
         listTopFifty = imdbScraper.getTopActors(self.topUrl)
         """for x in listTopFifty:
-            print(x["id"])
+            #print(x["id"])
             imdbScraper.getBio(x["id"])
-            imdbScraper.getFilmography(x["id"])"""
+            imdbScraper.getFilmography(x["id"])
+            imdbScraper.getAwards(x["id"])
+            """
         
-        imdbScraper.getBio("nm0001337")
-        #imdbScraper.getBio("nm3910031")
-        #imdbScraper.getBio("nm0842332")
-
-        #imdbScraper.getFilmography("nm0001337")
-        #imdbScraper.getFilmography("nm3910031")
-        #imdbScraper.getFilmography("nm0842332")
+        imdbScraper.getFilmography("nm0001337")
+        # imdbScraper.getBio("nm0001337")
 
         #imdbScraper.getAwards("nm0001337")

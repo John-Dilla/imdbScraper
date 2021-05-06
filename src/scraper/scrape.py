@@ -75,12 +75,10 @@ class Scraper:
         temp = soup.find(id='tableSpouses')
         ### check if actor has spouses
         if temp:
-            #temp = temp.find_all('tr')
-            spouseName = temp.find('a').text.strip()
-            spouseInfo = temp.find_next('td').find_next('td').text.strip()
-            spouseInfo = spouseInfo.strip("\n")
-            print("###",spouseInfo, "###")
-            spouse = spouseName + " " + spouseInfo
+            temp = temp.text.strip().replace(u'\xa0', u' ')
+            spouse = temp.replace("\n", "")
+            #removes multiple spaces
+            spouse = " ".join(spouse.split())
         
         actorDict = {'Place of birth': birthPlace, 'Date of birth': birthDate,
         'Birthname': birthName, 'Nickname': nickName,
@@ -92,7 +90,7 @@ class Scraper:
 
 
     def getFilmography(self, actorID: str):
-        url = "https://www.imdb.com/filmosearch/?sort=year&explore=title_type&role=" + actorID + "&ref_=nm_flmg_shw_2"
+        url = "https://www.imdb.com/filmosearch/?explore=title_type&role=" + actorID + "&ref_=nm_flmg_shw_3&sort=user_rating,desc&mode=detail&page=1"
         r = requests.get(url, headers = self._headers)
         soup = BeautifulSoup(r.text, 'html.parser')
 
@@ -195,4 +193,23 @@ class Scraper:
         f.writeToDirectory("awards", actorID, dataFrame)
 
     def getGenres(self, actorID: str):
-        print()
+        url = "https://www.imdb.com/filmosearch/?explore=title_type&role=" + actorID + "&ref_=nm_flmg_shw_3&sort=year,desc&mode=detail&page=1"
+        r = requests.get(url, headers = self._headers)
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        listGenre = []
+        dictGenre = dict()
+
+        genre = None
+        dataCount = None
+
+        temp = soup.find('div', {"class": "faceter-fieldset genres"}).find_all('input')
+        for x in temp:
+            #print(x.text)
+            genre = x['name']
+            dataCount = x['data-count']
+            awardDict = {'Genre': genre, 'Count': dataCount}
+            listGenre.append(awardDict)
+
+        dataFrame = pd.DataFrame(listGenre)
+        f.writeToDirectory("genre", actorID, dataFrame)

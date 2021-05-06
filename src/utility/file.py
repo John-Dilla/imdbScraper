@@ -7,19 +7,24 @@ pathStructure2 = os.path.join(rootPath, 'biography')
 
 def createDatabase():
     rootPath = os.path.join(os.getcwd(), 'database')
-    pathStructure1 = os.path.join(rootPath, 'filmography')
-    pathStructure2 = os.path.join(rootPath, 'biography')
-    pathStructure3 = os.path.join(rootPath, 'awards')
+    filmography = os.path.join(rootPath, 'filmography')
+    biography = os.path.join(rootPath, 'biography')
+    awards = os.path.join(rootPath, 'awards')
+    genre = os.path.join(rootPath, 'genre')
     try:
-        os.makedirs(pathStructure1)
+        os.makedirs(filmography)
     except OSError:
         pass
     try:
-        os.makedirs(pathStructure2)
+        os.makedirs(biography)
     except OSError:
         pass
     try:
-        os.makedirs(pathStructure3)
+        os.makedirs(awards)
+    except OSError:
+        pass
+    try:
+        os.makedirs(genre)
     except OSError:
         pass
 
