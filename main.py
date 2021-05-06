@@ -10,9 +10,6 @@ def main():
     
     imdbScraper = Controller(url)
     imdbScraper.structure()
-    
-
-
 
 if __name__ == "__main__":
     main()

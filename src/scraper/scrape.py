@@ -88,57 +88,6 @@ class Scraper:
         dataFrame = pd.DataFrame(listBio)
         f.writeToDirectory("biography", actorID, dataFrame)
 
-
-    def getFilmography(self, actorID: str):
-        url = "https://www.imdb.com/filmosearch/?explore=title_type&role=" + actorID + "&ref_=nm_flmg_shw_3&sort=user_rating,desc&mode=detail&page=1"
-        r = requests.get(url, headers = self._headers)
-        soup = BeautifulSoup(r.text, 'html.parser')
-
-        ranking = None
-        movieName = None
-        movieNameSuffix = None
-        certificate = None
-        runtime = None
-        genre = None
-        rating = None
-        plot = None
-
-        listFilmography = []
-        filmoDict = dict()
-
-        temp = soup.find_all("div",{"class": "lister-item-content"})
-        for x in temp:
-            ranking = x.h3.span.text.strip("\n")
-            #print(ranking)
-            movieName = x.h3.a.text.strip()
-            #print("Name:",movieName)
-            if x.h3.small:                
-                movieNameSuffix = x.h3.small.text.strip() + " " + x.h3.small.find_next('a').text.strip()
-                #print("movieNameSuffix", movieNameSuffix)
-            if x.p.find("span", {"class": "certificate"}):
-                #This changes based on the 'accept-language' in the Request-Header
-                certificate = x.find("span", {"class": "certificate"}).text.strip()
-            if x.find("span", {"class": "runtime"}):
-                runtime = x.find("span", {"class": "runtime"}).text.strip()
-            if x.find("span", {"class": "genre"}):
-                genre = x.find("span", {"class": "genre"}).text.strip()
-            if x.find("div", {"class": "inline-block ratings-imdb-rating"}):
-                rating = x.find("div", {"class": "inline-block ratings-imdb-rating"}).text.strip()
-            if x.find("p", {"class": ""}):
-                plot = x.find("p", {"class": ""}).text.strip()
-                # Edge case where there is no existing plot
-                if plot == "Add a Plot":
-                    plot = None
-                #print("Plot:",plot)
-
-            filmoDict = {'Ranking': ranking, 'Name': movieName,
-            'Movie suffix': movieNameSuffix, 'Nickname': certificate,
-            'Runtime': runtime, 'Genre': genre, 'Rating': rating, 'Plot': plot}
-            listFilmography.append(filmoDict)
-
-        dataFrame = pd.DataFrame(listFilmography)
-        f.writeToDirectory("filmography", actorID, dataFrame)
-
     def getAwards(self, actorID: str):
         url = "https://www.imdb.com/name/" + actorID + "/awards?ref_=nm_ql_2"
         r = requests.get(url, headers = self._headers)
@@ -205,7 +154,6 @@ class Scraper:
 
         temp = soup.find('div', {"class": "faceter-fieldset genres"}).find_all('input')
         for x in temp:
-            #print(x.text)
             genre = x['name']
             dataCount = x['data-count']
             awardDict = {'Genre': genre, 'Count': dataCount}
@@ -213,3 +161,80 @@ class Scraper:
 
         dataFrame = pd.DataFrame(listGenre)
         f.writeToDirectory("genre", actorID, dataFrame)
+
+    def getFilmography(self, actorID: str):
+        firstPage = "https://www.imdb.com/filmosearch/?explore=title_type&role=" + actorID + "&ref_=nm_flmg_shw_3&sort=user_rating,desc&mode=detail&page=1"
+
+        listFilmographyURL = []
+        listFilmographyURL = self._getPages(firstPage, listFilmographyURL)
+
+        listFilmography = []
+
+        for url in listFilmographyURL:
+            listFilmography = listFilmography + self._getFilmography(url)
+
+        dataFrame = pd.DataFrame(listFilmography)
+        f.writeToDirectory("filmography", actorID, dataFrame)
+
+    def _getPages(self, url, listOfUrls):
+        r = requests.get(url, headers = self._headers)
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        nextUrl = soup.find('a', class_ = "lister-page-next next-page")
+
+        if nextUrl:
+            listOfUrls.append(url)
+            nextUrl = "https://www.imdb.com/filmosearch/" + nextUrl['href']
+            return self._getPages(nextUrl, listOfUrls)
+        else:
+            listOfUrls.append(url)
+            return listOfUrls
+
+
+    def _getFilmography(self, url: str):
+        r = requests.get(url, headers = self._headers)
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        ranking = None
+        movieName = None
+        movieNameSuffix = None
+        certificate = None
+        runtime = None
+        genre = None
+        rating = None
+        plot = None
+
+        listFilmography = []
+        filmoDict = dict()
+
+        temp = soup.find_all("div",{"class": "lister-item-content"})
+        for x in temp:
+            ranking = x.h3.span.text.strip("\n")
+            #print(ranking)
+            movieName = x.h3.a.text.strip()
+            #print("Name:",movieName)
+            if x.h3.small:                
+                movieNameSuffix = x.h3.small.text.strip() + " " + x.h3.small.find_next('a').text.strip()
+                #print("movieNameSuffix", movieNameSuffix)
+            if x.p.find("span", {"class": "certificate"}):
+                #This changes based on the 'accept-language' in the Request-Header
+                certificate = x.find("span", {"class": "certificate"}).text.strip()
+            if x.find("span", {"class": "runtime"}):
+                runtime = x.find("span", {"class": "runtime"}).text.strip()
+            if x.find("span", {"class": "genre"}):
+                genre = x.find("span", {"class": "genre"}).text.strip()
+            if x.find("div", {"class": "inline-block ratings-imdb-rating"}):
+                rating = x.find("div", {"class": "inline-block ratings-imdb-rating"}).text.strip()
+            if x.find("p", {"class": ""}):
+                plot = x.find("p", {"class": ""}).text.strip()
+                # Edge case where there is no existing plot
+                if plot == "Add a Plot":
+                    plot = None
+                #print("Plot:",plot)
+
+            filmoDict = {'Ranking': ranking, 'Name': movieName,
+            'Movie suffix': movieNameSuffix, 'Certificate': certificate,
+            'Runtime': runtime, 'Genre': genre, 'Rating': rating, 'Plot': plot}
+            listFilmography.append(filmoDict)
+
+        return listFilmography
