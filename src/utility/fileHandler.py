@@ -2,15 +2,13 @@ import os
 import pandas as pd
 
 rootPath = os.path.join(os.getcwd(), 'database')
-pathStructure1 = os.path.join(rootPath, 'filmography')
-pathStructure2 = os.path.join(rootPath, 'biography')
 
 def createDatabase():
-    rootPath = os.path.join(os.getcwd(), 'database')
     filmography = os.path.join(rootPath, 'filmography')
     biography = os.path.join(rootPath, 'biography')
     awards = os.path.join(rootPath, 'awards')
     genre = os.path.join(rootPath, 'genre')
+
     try:
         os.makedirs(filmography)
     except OSError:
@@ -32,3 +30,8 @@ def writeToDirectory(folder: str, fileName: str, dataframe) -> None:
     print("Saving File:", os.path.join(rootPath, folder, fileName)+".csv")
     p = os.path.join(rootPath, folder, fileName)+".csv"
     dataframe.to_csv(p, mode='w', sep=';')
+
+def getTable(folder: str, fileName: str):
+    filePath = os.path.join(rootPath, folder, fileName)+".csv"
+    dataframe = pd.read_csv(filePath, error_bad_lines=False)
+    return dataframe

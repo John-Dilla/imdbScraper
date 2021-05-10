@@ -3,7 +3,7 @@ import re
 import pandas as pd
 from bs4 import BeautifulSoup
 
-import src.utility.file as f
+import src.utility.fileHandler as f
 
 class Scraper:
     """This class provides the scraping methods."""
@@ -160,10 +160,13 @@ class Scraper:
             listGenre.append(awardDict)
 
         dataFrame = pd.DataFrame(listGenre)
-        f.writeToDirectory("genre", actorID, dataFrame)
+        f.writeToDirectory("genre", actorID, dataFrame)    
 
     def getFilmography(self, actorID: str):
-        firstPage = "https://www.imdb.com/filmosearch/?explore=title_type&role=" + actorID + "&ref_=nm_flmg_shw_3&sort=user_rating,desc&mode=detail&page=1"
+        #urlFilmographyAll is for scraping every imdb entry an actor/actress has
+        urlFilmographyAll = "&ref_=nm_flmg_shw_3&sort=user_rating,desc&mode=detail&page=1"
+        urlFilmography = "&ref_=filmo_ref_typ&mode=detail&page=1&title_type=movie%2CtvMovie&sort=user_rating,desc"
+        firstPage = "https://www.imdb.com/filmosearch/?explore=title_type&role=" + actorID + urlFilmography
 
         listFilmographyURL = []
         listFilmographyURL = self._getPages(firstPage, listFilmographyURL)
@@ -197,7 +200,10 @@ class Scraper:
 
         ranking = None
         movieName = None
+        movieYear = None
+        #only need for episodes, hence it's excluded from the dictionary
         movieNameSuffix = None
+
         certificate = None
         runtime = None
         genre = None
@@ -212,29 +218,43 @@ class Scraper:
             ranking = x.h3.span.text.strip("\n")
             #print(ranking)
             movieName = x.h3.a.text.strip()
-            #print("Name:",movieName)
+            tempYear = x.a.find_next('span').text
+            if re.findall(r"[\d]{4,}", tempYear):
+                movieYear = re.findall(r"[\d]{4,}", tempYear)[0]
+            else:
+                movieYear = None
             if x.h3.small:                
                 movieNameSuffix = x.h3.small.text.strip() + " " + x.h3.small.find_next('a').text.strip()
                 #print("movieNameSuffix", movieNameSuffix)
             if x.p.find("span", {"class": "certificate"}):
                 #This changes based on the 'accept-language' in the Request-Header
                 certificate = x.find("span", {"class": "certificate"}).text.strip()
+            else:
+                certificate = None
             if x.find("span", {"class": "runtime"}):
                 runtime = x.find("span", {"class": "runtime"}).text.strip()
+            else:
+                runtime = None
             if x.find("span", {"class": "genre"}):
                 genre = x.find("span", {"class": "genre"}).text.strip()
+            else:
+                genre = None
             if x.find("div", {"class": "inline-block ratings-imdb-rating"}):
                 rating = x.find("div", {"class": "inline-block ratings-imdb-rating"}).text.strip()
+            else:
+                rating = None
             if x.find("p", {"class": ""}):
                 plot = x.find("p", {"class": ""}).text.strip()
                 # Edge case where there is no existing plot
                 if plot == "Add a Plot":
                     plot = None
                 #print("Plot:",plot)
+            else:
+                plot = None
 
             filmoDict = {'Ranking': ranking, 'Name': movieName,
-            'Movie suffix': movieNameSuffix, 'Certificate': certificate,
-            'Runtime': runtime, 'Genre': genre, 'Rating': rating, 'Plot': plot}
+                'Movie Year': movieYear, 'Certificate': certificate,
+                'Runtime': runtime, 'Genre': genre, 'Rating': rating, 'Plot': plot}
             listFilmography.append(filmoDict)
 
         return listFilmography
