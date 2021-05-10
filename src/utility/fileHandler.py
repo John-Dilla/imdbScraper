@@ -33,5 +33,5 @@ def writeToDirectory(folder: str, fileName: str, dataframe) -> None:
 
 def getTable(folder: str, fileName: str):
     filePath = os.path.join(rootPath, folder, fileName)+".csv"
-    dataframe = pd.read_csv(filePath, error_bad_lines=False)
+    dataframe = pd.read_csv(filePath, sep='semicolon')
     return dataframe
