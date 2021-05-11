@@ -4,15 +4,25 @@ import src.utility.fileHandler as io
 
 def top5Movie(actorID: str):
     dataframe = io.getTable("filmography", actorID)
-    top5 = dataframe[['Name', 'Year', 'Genre']]
+    top5 = dataframe[['Ranking', 'Name', 'Year', 'Genre']]
     print(top5.head())
 
 def ratingOverall(actorID: str):
-    dataframe = io.getTable("filmography", actorID)
-    top5 = dataframe[['Name', 'Year', 'Genre']]
-    print(top5.head())
+    """Calculates the overall rating of an actor or actress
+
+    Args:
+        actorID (str): the IMDB-ID of an actor or actress
+
+    Returns:
+        overallRating (float): Returns the rating calculated over all movies
+    """
+    dataframe = io.getTable("filmography", actorID).dropna(subset=['Rating'])
+    overallRating = dataframe['Rating'].mean().round(2)
+    return overallRating
 
 def ratingPerYear(actorID: str):
-    dataframe = io.getTable("filmography", actorID)
-    top5 = dataframe[['Name', 'Year', 'Genre']]
-    print(top5.head())
+    dataframe = io.getTable("filmography", actorID).dropna(subset=['Rating'])
+    perYearRating =  dataframe[['Rating', 'Year']]
+    perYearRating = perYearRating.groupby(['Year']).mean()
+    #perYearRating.sort_values('Year', ascending=False)
+    return perYearRating

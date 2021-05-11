@@ -240,7 +240,7 @@ class Scraper:
             else:
                 genre = None
             if x.find("div", {"class": "inline-block ratings-imdb-rating"}):
-                rating = x.find("div", {"class": "inline-block ratings-imdb-rating"}).text.strip()
+                rating = x.find("div", {"class": "inline-block ratings-imdb-rating"}).text.strip().replace(',', '.')
             else:
                 rating = None
             if x.find("p", {"class": ""}):

@@ -17,5 +17,6 @@ class Controller:
         #imdbScraper.getFilmography("nm0000136")
         #imdbScraper.getGenres("nm0000136")
 
-        d.top5Movie("nm0000136")
+        print("Overall Rating", d.ratingOverall("nm0000136"))
+        print(d.ratingPerYear("nm0000136"))
         
