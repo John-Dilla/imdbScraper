@@ -22,7 +22,8 @@ def ratingOverall(actorID: str):
 
 def ratingPerYear(actorID: str):
     dataframe = io.getTable("filmography", actorID).dropna(subset=['Rating'])
-    perYearRating =  dataframe[['Rating', 'Year']]
-    perYearRating = perYearRating.groupby(['Year']).mean()
-    #perYearRating.sort_values('Year', ascending=False)
+    #perYearRating =  dataframe[['Rating', 'Year']]
+    perYearRating = dataframe.loc[:, ['Rating', 'Year']]
+    perYearRating = perYearRating.groupby(['Year'], as_index=False).mean()
+    perYearRating.sort_values('Year', ascending=False)
     return perYearRating
