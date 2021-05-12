@@ -1,9 +1,10 @@
 import sys
+import os
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtCore import Qt
 
 
-qt_creator_file = "mainWindow.ui"
+qt_creator_file = os.path.join(os.path.dirname(sys.argv[0]), "mainwindow.ui")
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qt_creator_file)
 
 
