@@ -13,5 +13,7 @@ This project is built with:
 - Pandas
 - BeautifulSoup
 
-###Features
+### Features
 The project also has the ability to scrape for every single entry an actor or actress has. Including every single episode one has participated in as well as forthcoming series or movies.
+
+### How to use the scraper
