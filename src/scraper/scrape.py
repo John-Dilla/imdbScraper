@@ -28,7 +28,7 @@ class Scraper:
 
 
         dataFrame = pd.DataFrame(listTop50)
-        f.writeToDirectory("", "top50Actors", dataFrame)
+        f.writeToDirectory("", "top50", dataFrame)
         return listTop50
 
     def getBio(self, actorID: str):
