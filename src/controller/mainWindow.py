@@ -1,6 +1,5 @@
 import os
 import sys
-import pandas as pd
 from PyQt5 import QtWidgets, uic
 
 from src.scraper.scrapeController import Controller

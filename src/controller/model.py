@@ -1,5 +1,6 @@
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
+import pandas as pd
 
 class PandasModel(QtCore.QAbstractTableModel):
     def __init__(self, df = pd.DataFrame(), parent=None): 
@@ -32,7 +33,7 @@ class PandasModel(QtCore.QAbstractTableModel):
         if not index.isValid():
             return QtCore.QVariant()
 
-        return QtCore.QVariant(str(self._df.ix[index.row(), index.column()]))
+        return QtCore.QVariant(str(self._df.ID[index.row(), index.column()]))
 
     def setData(self, index, value, role):
         row = self._df.index[index.row()]
