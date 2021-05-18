@@ -1,19 +1,16 @@
 import sys
-import os
+from PyQt5 import QtWidgets
 
-from controller import Controller
-from src.ui.mainWindow import MainWindow
+from src.controller.mainWindow import MainWindow
+import src.utility.fileHandler as io
 
-import src.utility.fileHandler as f
-
-def main():
-    url = "https://www.imdb.com/list/ls053501318/"
-    f.createDatabase()
+def main():    
+    #Create and structure database if not exists
+    io.createDatabase()
     
+    app = QtWidgets.QApplication(sys.argv)
     mainUI = MainWindow()
-
-    #imdbScraper = Controller(url)
-    #imdbScraper.structure()
+    app.exec_()    
 
 if __name__ == "__main__":
     main()

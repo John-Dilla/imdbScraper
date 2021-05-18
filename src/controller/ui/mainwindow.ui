@@ -18,7 +18,7 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QPushButton" name="pushButton_scrape">
+       <widget class="QPushButton" name="button_scrape">
         <property name="maximumSize">
          <size>
           <width>255</width>
@@ -27,6 +27,9 @@
         </property>
         <property name="text">
          <string>Scrape</string>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
