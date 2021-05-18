@@ -34,6 +34,8 @@ def writeToDirectory(folder: str, fileName: str, dataframe) -> None:
 def getTable(folder: str, fileName: str):
     filePath = os.path.join(rootPath, folder, fileName)+".csv"
     dataframe = pd.read_csv(filePath, sep=';')
-    dataframe['Year'] = dataframe['Year'].astype('Int64')
-    dataframe['Rating'] = dataframe['Rating'].astype('float')
+    if 'Year' in dataframe.columns:
+        dataframe['Year'] = dataframe['Year'].astype('Int64')
+    if 'Rating' in dataframe.columns:
+        dataframe['Rating'] = dataframe['Rating'].astype('float')
     return dataframe
