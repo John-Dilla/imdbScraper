@@ -53,6 +53,10 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionReload_Database"/>
+    <addaction name="actionScrape_IMDB"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -67,6 +71,21 @@
   <action name="actionINfo">
    <property name="text">
     <string>Info</string>
+   </property>
+  </action>
+  <action name="actionReload_Database">
+   <property name="text">
+    <string>Reload Database</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionScrape_IMDB">
+   <property name="text">
+    <string>Scrape IMDB</string>
    </property>
   </action>
  </widget>

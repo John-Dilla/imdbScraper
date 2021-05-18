@@ -20,14 +20,15 @@ class Scraper:
         listTop50 = []
 
         for item in list:
-            #print("Top:{0} ID:{1} Name:{2}".format(item.span.getText(),
-                #item.a.get('href'), item.a.getText().lstrip()))
             tempDict = dict()
-            tempDict['top'] = item.span.getText().rstrip()
-            tempDict['id'] = item.a.get('href').split("?")[0].replace("/name/", "")
-            tempDict['name'] = item.a.getText().lstrip().rstrip("\n")
+            tempDict['Ranking'] = item.span.getText().rstrip()
+            tempDict['ID'] = item.a.get('href').split("?")[0].replace("/name/", "")
+            tempDict['Name'] = item.a.getText().lstrip().rstrip("\n")
             listTop50.append(tempDict)
 
+
+        dataFrame = pd.DataFrame(listTop50)
+        f.writeToDirectory("", "top50Actors", dataFrame)
         return listTop50
 
     def getBio(self, actorID: str):

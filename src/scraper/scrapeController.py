@@ -4,19 +4,21 @@ import src.utility.tableHandler as d
 
 class Controller:
     def __init__(self, url: str) -> None:
-        self.topUrl = url
+        self._topUrl = url
+        self._scraper = Scraper()
     def structure(self):
-        imdbScraper = Scraper()
-        listTopFifty = imdbScraper.getTopActors(self.topUrl)
-        for x in listTopFifty:
+        listTopFifty = self._scraper.getTopActors(self._topUrl)
+        #for x in listTopFifty:
             #print(x["id"])
-            imdbScraper.getBio(x["id"])
-            imdbScraper.getFilmography(x["id"])
-            imdbScraper.getAwards(x["id"])
+            #imdbScraper.getBio(x["ID"])
+            #imdbScraper.getFilmography(x["ID"])
+            #imdbScraper.getAwards(x["ID"])
         
-        #imdbScraper.getFilmography("nm0000136")
-        imdbScraper.getGenres("nm0000136")
+        #Biography      imdbScraper.getBio("nm0000136")
+        #Awards      imdbScraper.getAwards("nm0000136")
+        #Filmography    imdbScraper.getFilmography("nm0000136")
+        #Genres         imdbScraper.getGenres("nm0000136")
 
-        print("Overall Rating", d.ratingOverall("nm0000136"))
-        print(d.ratingPerYear("nm0000136"))
+        #Overall Rating     d.ratingOverall("nm0000136")
+        #Per Year Rating    d.ratingPerYear("nm0000136")
         

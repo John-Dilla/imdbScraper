@@ -22,8 +22,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.show() # Show the GUI
 
     def _scrape(self) -> None:
-        #self._imdbScraper.structure()
         print("click worked")
+        self._imdbScraper.structure()
 
 app = QtWidgets.QApplication(sys.argv)
 window = MainWindow()
