@@ -38,4 +38,6 @@ def getTable(folder: str, fileName: str):
         dataframe['Year'] = dataframe['Year'].astype('Int64')
     if 'Rating' in dataframe.columns:
         dataframe['Rating'] = dataframe['Rating'].astype('float')
+    if 'Ranking' in dataframe.columns:
+        dataframe['Ranking'] = dataframe['Ranking'].astype('Int64')
     return dataframe
