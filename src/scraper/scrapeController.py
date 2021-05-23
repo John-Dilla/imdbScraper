@@ -14,9 +14,11 @@ class Controller:
             #imdbScraper.getFilmography(x["ID"])
             #imdbScraper.getAwards(x["ID"])
         
-        #Biography      imdbScraper.getBio("nm0000136")
+        #Biography      
+        self._scraper.getBio("nm0000136")
         #Awards      imdbScraper.getAwards("nm0000136")
-        #Filmography    imdbScraper.getFilmography("nm0000136")
+        #Filmography    
+        self._scraper.getFilmography("nm0000136")
         #Genres         imdbScraper.getGenres("nm0000136")
 
         #Overall Rating     d.ratingOverall("nm0000136")

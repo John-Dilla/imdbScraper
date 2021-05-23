@@ -27,6 +27,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tableView.setModel(self._model)
         self.tableView.setColumnHidden(0, True)
         
+        
         # Show the GUI
         self.show() 
 
