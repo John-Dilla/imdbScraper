@@ -30,7 +30,14 @@ def createDatabase():
 def writeToDirectory(folder: str, fileName: str, dataframe) -> None: 
     print("Saving File:", os.path.join(rootPath, folder, fileName)+".csv")
     p = os.path.join(rootPath, folder, fileName)+".csv"
-    dataframe.to_csv(p, mode='w', sep=';')
+
+    # Exception can happen when executed for the very first time. 
+    # If so, no database is found.
+    try:
+        dataframe.to_csv(p, mode='w', sep=';')
+    except:
+        createDatabase()
+        dataframe.to_csv(p, mode='w', sep=';')
 
 def writeProfilepicture(fileName: str, imageURL: str) -> None:
     picturePath = os.path.join(rootPath, "biography", fileName)+".jpg"

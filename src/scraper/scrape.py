@@ -132,7 +132,6 @@ class Scraper:
                     awardDescription = awardDescription + " - " + mov + " " + year
                     #print("###",awardDescription,"###")
 
-                print(award)
                 awardDict = {'Award': award, 'Year': awardYear,
                     'Outcome': awardOutcome, 'Description': awardDescription}
 
