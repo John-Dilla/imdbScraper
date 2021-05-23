@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import urllib.request
 
 rootPath = os.path.join(os.getcwd(), 'database')
 
@@ -30,6 +31,11 @@ def writeToDirectory(folder: str, fileName: str, dataframe) -> None:
     print("Saving File:", os.path.join(rootPath, folder, fileName)+".csv")
     p = os.path.join(rootPath, folder, fileName)+".csv"
     dataframe.to_csv(p, mode='w', sep=';')
+
+def writeProfilepicture(fileName: str, imageURL: str) -> None:
+    picturePath = os.path.join(rootPath, "biography", fileName)+".jpg"
+    urllib.request.urlretrieve(imageURL, picturePath)
+
 
 def getTable(folder: str, fileName: str):
     filePath = os.path.join(rootPath, folder, fileName)+".csv"

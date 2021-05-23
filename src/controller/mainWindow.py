@@ -26,8 +26,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self._model = PandasModel(df)  
         self.tableView.setModel(self._model)
         self.tableView.setColumnHidden(0, True)
-        
-        
+                
         # Show the GUI
         self.show() 
 

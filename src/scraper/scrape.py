@@ -165,7 +165,7 @@ class Scraper:
 
     def getFilmography(self, actorID: str):
         #urlFilmographyAll is for scraping every imdb entry an actor/actress has
-        urlFilmographyAll = "&ref_=nm_flmg_shw_3&sort=user_rating,desc&mode=detail&page=1"
+        #urlFilmographyAll = "&ref_=nm_flmg_shw_3&sort=user_rating,desc&mode=detail&page=1"
         urlFilmography = "&ref_=filmo_ref_typ&mode=detail&page=1&title_type=movie%2CtvMovie&sort=user_rating,desc"
         firstPage = "https://www.imdb.com/filmosearch/?explore=title_type&role=" + actorID + urlFilmography
 
@@ -259,3 +259,12 @@ class Scraper:
             listFilmography.append(filmoDict)
 
         return listFilmography
+
+    def getPictures(self, actorID: str):
+        url = "https://www.imdb.com/name/" + actorID
+        r = requests.get(url, headers = self._headers)
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        temp = soup.find_all("div", {"class": "image"})
+        imageURL = temp[0].find_next("img")["src"]
+        f.writeProfilepicture(actorID, imageURL)

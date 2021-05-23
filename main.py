@@ -5,7 +5,7 @@ from src.controller.mainWindow import MainWindow
 import src.utility.fileHandler as io
 
 def main():    
-    #Create and structure database if not exists
+    #Create and structure database if it does not exist
     io.createDatabase()
     
     app = QtWidgets.QApplication(sys.argv)
