@@ -48,10 +48,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def _viewClicked(self, clickedIndex):
         print("worked")
+        # Retrieve the id of the selected actress or actor
         row=clickedIndex.row()
         model=clickedIndex.model()
-        # Retrieve the id of the selected actress or actor
         actorID = model._df.iloc[[row]]["ID"]
+
+        # Show new window
         dialogWindow = Actor(actorID)
         dialogWindow.show()
 

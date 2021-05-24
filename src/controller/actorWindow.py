@@ -13,4 +13,3 @@ class Actor(QWidget):
         ui_path = os.path.dirname(os.path.abspath(__file__))
         path = os.path.join(ui_path, "ui", "actorwindow.ui")
         uic.loadUi(path, self) 
-        self.show()
