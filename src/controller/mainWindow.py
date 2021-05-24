@@ -4,6 +4,7 @@ from PyQt5 import QtWidgets, uic
 
 from src.scraper.scrapeController import Controller
 from src.controller.model import PandasModel
+from src.controller.actorWindow import Actor
 import src.utility.fileHandler as io
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -28,11 +29,16 @@ class MainWindow(QtWidgets.QMainWindow):
         df = io.getTable("", "top50")
         self._model = PandasModel(df)  
         self.tableView.setModel(self._model)
+        # Hide first column of dataframe
         self.tableView.setColumnHidden(0, True)
-
+        # Click behaviour set up
         self.tableView.doubleClicked.connect(self._viewClicked)
         self.tableView.setSelectionBehavior(self.tableView.SelectRows)
-                
+        # Set up the columns. Last and second to last column get stretched for neat design
+        header = self.tableView.horizontalHeader()
+        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)       
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
         # Show the GUI
         self.show() 
 
@@ -45,7 +51,9 @@ class MainWindow(QtWidgets.QMainWindow):
         row=clickedIndex.row()
         model=clickedIndex.model()
         # Retrieve the id of the selected actress or actor
-        model._df.iloc[[row]]["ID"]
+        actorID = model._df.iloc[[row]]["ID"]
+        dialogWindow = Actor(actorID)
+        dialogWindow.show()
 
 app = QtWidgets.QApplication(sys.argv)
 window = MainWindow()
