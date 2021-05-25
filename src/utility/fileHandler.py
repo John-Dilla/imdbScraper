@@ -54,3 +54,8 @@ def getTable(folder: str, fileName: str):
     if 'Ranking' in dataframe.columns:
         dataframe['Ranking'] = dataframe['Ranking'].astype('Int64')
     return dataframe
+
+def getUIPath(window: str):
+    ui_path = os.path.dirname(os.path.abspath(__file__))
+    pathUI = os.path.join(ui_path, "ui", window)
+    return pathUI

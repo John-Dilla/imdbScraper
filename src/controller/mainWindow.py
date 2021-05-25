@@ -9,18 +9,16 @@ import src.utility.fileHandler as io
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
+        super().__init__()  
         self._url = "https://www.imdb.com/list/ls053501318/"
         self._imdbScraper = Controller(self._url)
         
         # Retrieves the top 50 in case database does not exist (usually happens the very first time)
         self._imdbScraper.getTop()
         
-        # Call the inherited classes __init__ method
-        super(MainWindow, self).__init__()         
         # Load the .ui file
-        ui_path = os.path.dirname(os.path.abspath(__file__))
-        path = os.path.join(ui_path, "ui", "mainwindow.ui")
-        uic.loadUi(path, self) 
+        pathUI = io.getUIPath("mainWindow.ui")
+        uic.loadUi(pathUI, self) 
 
         # Initialize button
         self.button_scrape.clicked.connect(self._scrape)
@@ -47,11 +45,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self._imdbScraper.structure()
 
     def _viewClicked(self, clickedIndex):
-        print("worked")
         # Retrieve the id of the selected actress or actor
         row=clickedIndex.row()
         model=clickedIndex.model()
-        actorID = model._df.iloc[[row]]["ID"]
+        actorID = model._df.iloc[row]["ID"]
+
+        print("Selected: ", model._df.iloc[row]["Name"])
 
         # Show new window
         dialogWindow = Actor(actorID)
