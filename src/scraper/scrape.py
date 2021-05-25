@@ -76,10 +76,15 @@ class Scraper:
         temp = soup.find(id='tableSpouses')
         ### check if actor has spouses
         if temp:
-            temp = temp.text.strip().replace(u'\xa0', u' ')
-            spouse = temp.replace("\n", "")
-            #removes multiple spaces
-            spouse = " ".join(spouse.split())
+            tempListSpouse = []
+            temp = temp.find_all('tr')
+            for entry in temp:
+                # Because of special a-tags some spouses have \xa0 characters
+                entry = entry.text.strip().replace(u'\xa0', u' ').replace("\n", "")
+                # The join operation removes multiple spaces
+                entry = ' '.join(entry.split())
+                tempListSpouse.append(entry)
+            spouse = "|".join(tempListSpouse)
         
         actorDict = {'Place of birth': birthPlace, 'Date of birth': birthDate,
         'Birthname': birthName, 'Nickname': nickName,
