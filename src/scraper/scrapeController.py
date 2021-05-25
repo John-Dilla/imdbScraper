@@ -19,7 +19,7 @@ class Controller:
         start_time = time.time()
 
         for x in listTopFifty:
-            print("ID.",x["ID"],"Name",x["Name"])
+            print("ID:",x["ID"],"Name:",x["Name"])
             self._scraper.getBio(x["ID"])
             self._scraper.getFilmography(x["ID"])
             self._scraper.getAwards(x["ID"])

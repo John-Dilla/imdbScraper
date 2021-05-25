@@ -160,7 +160,7 @@ class Scraper:
             listGenre.append(awardDict)
 
         dataFrame = pd.DataFrame(listGenre)
-        f.writeToDirectory("genre", actorID, dataFrame)    
+        f.writeToDirectory("genres", actorID, dataFrame)    
 
     def getFilmography(self, actorID: str):
         #urlFilmographyAll is for scraping every imdb entry an actor/actress has

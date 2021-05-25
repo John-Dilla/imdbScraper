@@ -25,20 +25,60 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QLabel" name="name">
-         <property name="text">
-          <string>Name</string>
-         </property>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout_10">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLabel" name="name">
+             <property name="text">
+              <string>Name</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="height">
+             <property name="text">
+              <string>Height</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="rating">
+             <property name="text">
+              <string>Overall Rating</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QLabel" name="place">
+             <property name="text">
+              <string>Place of Birth</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="date">
+             <property name="text">
+              <string>Date of Birth</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="spouse">
+             <property name="text">
+              <string>Spouse</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </item>
-       <item>
-        <widget class="QLabel" name="rating">
-         <property name="text">
-          <string>Overall Rating</string>
-         </property>
-        </widget>
-       </item>
-       <item>
+       <item alignment="Qt::AlignRight">
         <widget class="QLabel" name="picture">
          <property name="minimumSize">
           <size>

@@ -49,4 +49,9 @@ class Actor(QWidget):
         self.tableAwards.setColumnHidden(0, True)
         self.tableGenres.setColumnHidden(0, True)
 
+        # Place of birth
+        # Date of birth
+        # Spouse
+        # Height
+
         self.show()
