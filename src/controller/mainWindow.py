@@ -50,7 +50,7 @@ class MainWindow(QtWidgets.QMainWindow):
         model=clickedIndex.model()
         actorID = model._df.iloc[row]["ID"]
 
-        print("Selected: ", model._df.iloc[row]["Name"])
+        print("Selected: ", model._df.iloc[row]["Name"], "ID: ", actorID)
 
         # Show new window
         self._newWindow = Actor(actorID)

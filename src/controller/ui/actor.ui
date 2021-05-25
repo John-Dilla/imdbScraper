@@ -29,21 +29,39 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
-            <widget class="QLabel" name="name">
+            <widget class="QLabel" name="uiName">
+             <property name="minimumSize">
+              <size>
+               <width>300</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="text">
               <string>Name</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="height">
+            <widget class="QLabel" name="uiHeight">
+             <property name="minimumSize">
+              <size>
+               <width>300</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="text">
               <string>Height</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="rating">
+            <widget class="QLabel" name="uiRating">
+             <property name="minimumSize">
+              <size>
+               <width>300</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="text">
               <string>Overall Rating</string>
              </property>
@@ -54,21 +72,21 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
-            <widget class="QLabel" name="place">
+            <widget class="QLabel" name="uiPlace">
              <property name="text">
               <string>Place of Birth</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="date">
+            <widget class="QLabel" name="uiDate">
              <property name="text">
               <string>Date of Birth</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="spouse">
+            <widget class="QLabel" name="uiSpouse">
              <property name="text">
               <string>Spouse</string>
              </property>
@@ -82,8 +100,8 @@
         <widget class="QLabel" name="picture">
          <property name="minimumSize">
           <size>
-           <width>30</width>
-           <height>100</height>
+           <width>180</width>
+           <height>180</height>
           </size>
          </property>
          <property name="text">

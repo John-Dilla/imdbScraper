@@ -20,16 +20,31 @@ class Actor(QWidget):
         pathUI = io.getUIPath(abspath(__file__), "actor.ui")
         uic.loadUi(pathUI, self) 
 
+        # Set the text for all the bio information labels 
         dfBio = io.getTable("biography", actorID)
-        name = "Name: " + str(dfBio.iloc[0]["Birthname"])
-        self.name.setText(name)
-        rating = "Overall rating: " + str(th.ratingOverall(actorID))
-        self.rating.setText(rating)
+        name = "Name: \n" + str(dfBio.iloc[0]["Birthname"])
+        self.uiName.setText(name)
+        rating = "Overall rating: \n" + str(th.ratingOverall(actorID))
+        self.uiRating.setText(rating)
+
+        # Place of birth
+        place = "Place of Birth: \n" + str(dfBio.iloc[0]["Place of birth"])
+        self.uiPlace.setText(place)
+        # Date of birth
+        birth = "Date of Birth: \n" + str(dfBio.iloc[0]["Date of birth"])
+        self.uiDate.setText(birth)
+        # Spouse. Also there must be a new line for each spouse
+        tempListSpouse = str(dfBio.iloc[0]["Spouse"]).split('|')
+        spouse = "Spouse: \n" + '\n'.join(tempListSpouse)
+        self.uiSpouse.setText(spouse)
+        # Height
+        height = "Height: \n" + str(dfBio.iloc[0]["Height"])
+        self.uiHeight.setText(height)
 
         self.textBiography.setText(dfBio.iloc[0]["Bio"])
         self.textBiography.setReadOnly(True)
         pixmap = QPixmap(io.getPicture(actorID))
-        pixmap = pixmap.scaled(180, 180, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        pixmap = pixmap.scaled(200, 200, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.picture.setPixmap(pixmap)
 
         # Initialize movie table
@@ -48,10 +63,5 @@ class Actor(QWidget):
         self.tableMovies.setColumnHidden(0, True)
         self.tableAwards.setColumnHidden(0, True)
         self.tableGenres.setColumnHidden(0, True)
-
-        # Place of birth
-        # Date of birth
-        # Spouse
-        # Height
 
         self.show()
