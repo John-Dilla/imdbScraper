@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>872</width>
-    <height>560</height>
+    <width>1187</width>
+    <height>799</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1187</width>
+    <height>799</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -60,9 +66,12 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
-            <widget class="QLabel" name="textBiography">
-             <property name="text">
-              <string>textBiography</string>
+            <widget class="QTextEdit" name="textBiography">
+             <property name="minimumSize">
+              <size>
+               <width>1143</width>
+               <height>0</height>
+              </size>
              </property>
             </widget>
            </item>
