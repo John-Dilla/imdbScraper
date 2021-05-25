@@ -31,4 +31,8 @@ class Controller:
         print("Duration in seconds:", duration)
         
         #Overall Rating     d.ratingOverall("nm0000136")
-        #Per Year Rating    d.ratingPerYear("nm0000136")    
+        #Per Year Rating    d.ratingPerYear("nm0000136")  
+
+    def test(self):
+        self._scraper.getPictures("nm0001401")
+        self._scraper.getAwards("nm0001401")
