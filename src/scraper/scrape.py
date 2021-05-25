@@ -9,8 +9,8 @@ class Scraper:
     """This class provides the scraping methods."""
     def __init__(self) -> None:
         self._headers = {'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0',
-                        #'accept-language': 'en-US'}
-                        'accept-language': 'de-DE'}
+                        'accept-language': 'en-US'}
+                        #'accept-language': 'de-DE'}
 
     def getTopActors(self, url: str):
         r = requests.get(url, headers = self._headers)
