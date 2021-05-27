@@ -206,7 +206,7 @@ class Scraper:
         ranking = None
         movieName = None
         movieYear = None
-        #only need for episodes, hence it's excluded from the dictionary
+        # This is only needed for episodes, hence it's excluded from the dictionary
         movieNameSuffix = None
 
         certificate = None
