@@ -114,7 +114,7 @@
      <item>
       <widget class="QTabWidget" name="Information">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="biography">
         <attribute name="title">
@@ -145,7 +145,24 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
+            <widget class="QCheckBox" name="checkTop5">
+             <property name="text">
+              <string>Show top 5 Movies</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QTableView" name="tableMovies"/>
+           </item>
+           <item>
+            <widget class="QTextEdit" name="moviePlot">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>100</height>
+              </size>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -177,6 +194,20 @@
           <layout class="QVBoxLayout" name="verticalLayout_5">
            <item>
             <widget class="QTableView" name="tableGenres"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="rating">
+        <attribute name="title">
+         <string>Ratings per Year</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_14">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_13">
+           <item>
+            <widget class="QTableView" name="tableRating"/>
            </item>
           </layout>
          </item>

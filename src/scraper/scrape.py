@@ -83,6 +83,7 @@ class Scraper:
                 entry = entry.text.strip().replace(u'\xa0', u' ').replace("\n", "")
                 # The join operation removes multiple spaces
                 entry = ' '.join(entry.split())
+                entry = entry.replace("( ", "(")
                 tempListSpouse.append(entry)
             spouse = "|".join(tempListSpouse)
         
@@ -152,8 +153,7 @@ class Scraper:
         soup = BeautifulSoup(r.text, 'html.parser')
 
         listGenre = []
-        dictGenre = dict()
-
+        
         genre = None
         dataCount = None
 
@@ -165,7 +165,7 @@ class Scraper:
             listGenre.append(awardDict)
 
         dataFrame = pd.DataFrame(listGenre)
-        f.writeToDirectory("genres", actorID, dataFrame)    
+        f.writeToDirectory("filmography", "genre_"+actorID, dataFrame)    
 
     def getFilmography(self, actorID: str):
         #urlFilmographyAll is for scraping every imdb entry an actor/actress has
@@ -253,7 +253,9 @@ class Scraper:
                 # Edge case where there is no existing plot
                 if plot == "Add a Plot":
                     plot = None
-                #print("Plot:",plot)
+                else:
+                    # for cosmetic reasons - if existing - the extended summary is excluded from the plot
+                    plot = plot.replace("See full summary »", "")
             else:
                 plot = None
 
