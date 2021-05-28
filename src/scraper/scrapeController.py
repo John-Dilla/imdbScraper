@@ -34,9 +34,4 @@ class Controller:
         #Per Year Rating    d.ratingPerYear("nm0000136")  
 
     def test(self):
-        listTopFifty = self._scraper.getTopActors(self._topUrl)
-        
-        for x in listTopFifty:
-            print("ID:",x["ID"],"Name:",x["Name"])
-            self._scraper.getBio(x["ID"])
-#        self._scraper.getAwards("nm0001401")
+        self._scraper.getAwards("nm0001401")

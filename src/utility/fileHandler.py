@@ -10,7 +10,6 @@ def createDatabase():
     filmography = join(rootPath, 'filmography')
     biography = join(rootPath, 'biography')
     awards = join(rootPath, 'awards')
-    genres = join(rootPath, 'genres')
 
     try:
         os.makedirs(filmography)
@@ -22,10 +21,6 @@ def createDatabase():
         pass
     try:
         os.makedirs(awards)
-    except OSError:
-        pass
-    try:
-        os.makedirs(genres)
     except OSError:
         pass
 
