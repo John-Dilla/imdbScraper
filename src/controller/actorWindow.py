@@ -46,8 +46,10 @@ class Actor(QWidget):
         dfBio = io.getTable("biography", actorID)
         name = "Name: \n" + str(dfBio.iloc[0]["Birthname"])
         self.uiName.setText(name)
-        rating = "Overall rating: \n" + str(th.ratingOverall(actorID))
-        self.uiRating.setText(rating)
+
+        icon = io.getUIPath(abspath(__file__), "rating.ico")
+        rating = "Overall rating: <br>" + str(th.ratingOverall(actorID))
+        self.uiRating.setText("<html>"+rating+" <img src='"+icon+"'></html>")
 
         # Place of birth
         place = "Place of Birth: \n" + str(dfBio.iloc[0]["Place of birth"])
@@ -68,11 +70,13 @@ class Actor(QWidget):
         height = "Height: \n" + str(dfBio.iloc[0]["Height"])
         self.uiHeight.setText(height)
 
+        # Set biography
         self.textBiography.setText(dfBio.iloc[0]["Bio"])
         self.textBiography.setReadOnly(True)
+        # Set profile picture
         pixmap = QPixmap(io.getPicture(actorID))
         pixmap = pixmap.scaled(200, 200, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        self.picture.setPixmap(pixmap)
+        self.picture.setPixmap(pixmap)        
 
         # Initialize movie table
         self._setupTableMovies()
@@ -101,7 +105,7 @@ class Actor(QWidget):
         #plot = table column 8
         self.moviePlot.setVisible(False)
         self.moviePlot.setReadOnly(True)
-        self.tableMovies.doubleClicked.connect(self._showPlot)
+        self.tableMovies.clicked.connect(self._showPlot)
 
     def _showPlot(self, clickedIndex):
         row=clickedIndex.row()

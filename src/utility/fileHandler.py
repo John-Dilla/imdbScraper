@@ -6,15 +6,13 @@ import urllib.request
 
 rootPath = join(os.getcwd(), 'database')
 
-def createDatabase(imdbScraper):
+def createDatabase():
     filmography = join(rootPath, 'filmography')
     biography = join(rootPath, 'biography')
     awards = join(rootPath, 'awards')
 
     try:
         os.makedirs(filmography)
-        # top 50 list is scraped only if database is deleted or does not exist
-        imdbScraper.getTop()
     except OSError:
         pass
     try:
