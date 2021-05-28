@@ -9,6 +9,7 @@ from PyQt5.QtGui import QPixmap
 import pandas as pd
 
 from src.controller.model import PandasModel
+from src.scraper.scrapeController import Controller
 import src.utility.fileHandler as io
 import src.utility.tableHandler as th
 
@@ -16,8 +17,17 @@ class Actor(QWidget):
     def __init__(self, actorID):
         super().__init__()
         self._actorID = actorID
+        self._modelRatings = None
+        try:
+            PandasModel(th.ratingPerYear(actorID))
+        except OSError:
+            # database for this actor is empty
+            print("Actor or Actress has not been scraped before.")
+            _scraper = Controller("")
+            _scraper.scrapeSingleActor(actorID)
+
         self._modelRatings = PandasModel(th.ratingPerYear(actorID))
-        
+
         self._dfGenres = io.getTable("filmography", "genre_"+actorID)
         self._modelGenres = PandasModel(self._dfGenres)
 
@@ -96,9 +106,12 @@ class Actor(QWidget):
     def _showPlot(self, clickedIndex):
         row=clickedIndex.row()
         model=clickedIndex.model()
-        plot = model._df.iloc[row]["Plot"]
-        self.moviePlot.setText(plot)
-        self.moviePlot.setVisible(True)
+        if not pd.isnull(model._df.iloc[row]["Plot"]):
+            plot = model._df.iloc[row]["Plot"]
+            self.moviePlot.setText(plot)
+            self.moviePlot.setVisible(True)
+        else:
+            self.moviePlot.setVisible(False)
     
     def _setupTableTop5(self):
         self.tableMovies.setModel(self._modelTop5)

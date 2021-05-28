@@ -23,7 +23,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self._pathIcon = io.getUIPath(abspath(__file__), "imdb.svg")
         
         # Retrieves the top 50 in case database does not exist (usually happens the very first time)
-        self._imdbScraper.getTop()
+        io.createDatabase(self._imdbScraper)
         
         # Load the .ui file
         uic.loadUi(self._pathUI, self) 
@@ -31,7 +31,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setWindowIcon(QtGui.QIcon(self._pathIcon))
 
         # Initialize button
-        self.button_scrape.clicked.connect(self._scrape)
+        #self.button_scrape.clicked.connect(self._scrape)
+        # removed for now in favor of neat design
+        self.button_scrape.setVisible(False)
 
         # Initialize table
         self._fillTable()        
@@ -57,9 +59,9 @@ class MainWindow(QtWidgets.QMainWindow):
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
 
-    def _scrape(self) -> None:
-        print("click worked")
-        self._imdbScraper.structure()
+    #def _scrape(self) -> None:
+        #print("click worked")
+        #self._imdbScraper.structure()
 
     def _showActor(self, clickedIndex):
         # Retrieve the id of the selected actress or actor
