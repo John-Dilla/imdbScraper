@@ -11,6 +11,7 @@ class Controller:
 
     def getTop(self):
         """ This function gets executed for the case when there is no database """
+        print("TOP 50 gets scraped")
         self._scraper.getTopActors(self._topUrl)
 
     def structure(self):
@@ -29,9 +30,13 @@ class Controller:
         # Duration of a all the scraping processes
         duration = time.time() - start_time
         print("Duration in seconds:", duration)
-        
-        #Overall Rating     d.ratingOverall("nm0000136")
-        #Per Year Rating    d.ratingPerYear("nm0000136")  
 
+    def scrapeSingleActor(self, id):
+        self._scraper.getBio(id)
+        self._scraper.getFilmography(id)
+        self._scraper.getAwards(id)
+        self._scraper.getGenres(id)
+        self._scraper.getPictures(id)
+        
     def test(self):
         self._scraper.getAwards("nm0001401")

@@ -129,14 +129,17 @@ class Scraper:
                     #print("Outcome:", awardOutcome)
 
                 awardDescription_temp = y.find('td', {"class": "award_description"})
-                #Description 
-                awardDescription = awardDescription_temp.next_element.strip()
-                #Movie + year 
-                if awardDescription_temp.find_next('a'):
-                    mov = awardDescription_temp.find_next('a').text.strip()
-                    year = awardDescription_temp.find_next('span').text.strip()
-                    awardDescription = awardDescription + " - " + mov + " " + year
-                    #print("###",awardDescription,"###")
+                if not awardDescription_temp.text == "\n":
+                    #Description 
+                    awardDescription = awardDescription_temp.next_element.strip()
+                    #Movie + year 
+                    if awardDescription_temp.find_next('a'):
+                        mov = awardDescription_temp.find_next('a').text.strip()
+                        year = awardDescription_temp.find_next('span').text.strip()
+                        awardDescription = awardDescription + " - " + mov + " " + year
+                        #print("###",awardDescription,"###")
+                else:
+                    awardDescription = None
 
                 awardDict = {'Award': award, 'Year': awardYear,
                     'Outcome': awardOutcome, 'Description': awardDescription}
@@ -255,7 +258,7 @@ class Scraper:
                     plot = None
                 else:
                     # for cosmetic reasons - if existing - the extended summary is excluded from the plot
-                    plot = plot.replace("See full summary »", "")
+                    plot = plot.replace("See full summary\xa0»", "")
             else:
                 plot = None
 
