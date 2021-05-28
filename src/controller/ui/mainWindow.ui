@@ -52,10 +52,20 @@
      <x>0</x>
      <y>0</y>
      <width>773</width>
-     <height>24</height>
+     <height>25</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
    <widget class="QMenu" name="menuFile">
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
     <property name="title">
      <string>File</string>
     </property>
@@ -78,10 +88,20 @@
    <property name="text">
     <string>About</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionReload">
    <property name="text">
     <string>Reload Database</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionExit">
@@ -92,6 +112,11 @@
   <action name="actionScrape">
    <property name="text">
     <string>Scrape IMDB</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
    </property>
   </action>
  </widget>

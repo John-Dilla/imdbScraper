@@ -36,6 +36,11 @@
                <height>0</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Name</string>
              </property>
@@ -48,6 +53,11 @@
                <width>300</width>
                <height>0</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+              </font>
              </property>
              <property name="text">
               <string>Height</string>
@@ -62,6 +72,11 @@
                <height>0</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Overall Rating</string>
              </property>
@@ -73,6 +88,11 @@
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
             <widget class="QLabel" name="uiPlace">
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Place of Birth</string>
              </property>
@@ -80,6 +100,11 @@
            </item>
            <item>
             <widget class="QLabel" name="uiDate">
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Date of Birth</string>
              </property>
@@ -87,6 +112,11 @@
            </item>
            <item>
             <widget class="QLabel" name="uiSpouse">
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Spouse</string>
              </property>
@@ -114,7 +144,7 @@
      <item>
       <widget class="QTabWidget" name="Information">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="biography">
         <attribute name="title">
@@ -130,6 +160,11 @@
                <width>1143</width>
                <height>0</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
              </property>
             </widget>
            </item>

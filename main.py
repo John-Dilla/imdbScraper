@@ -8,9 +8,6 @@ import src.utility.fileHandler as io
 from src.scraper.scrapeController import Controller
 
 def main():    
-    #Create and structure database if it does not exist
-    io.createDatabase()
-
     app = QtWidgets.QApplication(sys.argv)
     mainUI = MainWindow()
     mainUI.show()
