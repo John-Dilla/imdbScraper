@@ -14,7 +14,17 @@ import src.utility.fileHandler as io
 import src.utility.tableHandler as th
 
 class Actor(QWidget):
-    def __init__(self, actorID):
+    """A class to represent the window for an actor or actress.
+
+    Args:
+        QWidget (QWidget): The type of the window.
+    """
+    def __init__(self, actorID: str) -> None:
+        """Initializes the UI window of an actor or actress.
+
+        Args:
+            actorID (str): The IMDB-ID of an actor or actress.
+        """
         super().__init__()
         self._actorID = actorID
         self._modelRatings = None
@@ -90,12 +100,16 @@ class Actor(QWidget):
         
         self.show()
 
-    def _setupTableAwards(self):
+    def _setupTableAwards(self) -> None:
+        """Private function to set up the award table.
+        """
         self.tableAwards.setModel(self._modelAwards)
         self._generalTableSetup(self.tableAwards)
         self.tableAwards.setColumnHidden(0, True)
 
-    def _setupTableMovies(self):
+    def _setupTableMovies(self) -> None:
+        """Private function to set up the movie table.
+        """
         self.tableMovies.setModel(self._modelMovies)
         self._generalTableSetup(self.tableMovies)
         self.tableMovies.setColumnHidden(0, True)
@@ -110,7 +124,9 @@ class Actor(QWidget):
         self.tableMovies.selectionModel().selectionChanged.connect(self._showPlot)
 
     def _showPlot(self):
-        """
+        """Private function to outsource the plot of a movie in a seperate widget.
+        Also, this function tracks the selected row and changes the plot accordingly.
+        If the plot is not available, the box is set to setVisible(False).
         """
         # Use model
         model = self.tableMovies.model()
@@ -125,24 +141,35 @@ class Actor(QWidget):
             self.moviePlot.setVisible(False)
     
     def _setupTableTop5(self):
+        """Private function to set up the top 5 movie table.
+        """
         self.tableMovies.setModel(self._modelTop5)
         self._generalTableSetup(self.tableMovies)
 
     def _setupTableGenres(self):
+        """Private function to set up the genre table.
+        """
         self.tableGenres.setModel(self._modelGenres)
         self._generalTableSetup(self.tableGenres)
         self.tableGenres.setColumnHidden(0, True)
 
     def _setupTableRating(self):
+        """Private function to set up the rating per year table.
+        """
         self.tableRating.setModel(self._modelRatings)
         self._generalTableSetup(self.tableRating)
 
     def _generalTableSetup(self, table):
+        """Private function to set up the general properties of any table.
+        """
         table.setSelectionBehavior(table.SelectRows)
         header = table.horizontalHeader()
         header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
 
     def _clickBox(self, state):
+        """Private function to set up a checkbox.
+        Implemented to toggle between the movie table and the top 5 movie table.
+        """
         self.moviePlot.setVisible(False)
         if state == QtCore.Qt.Checked:
             print('Checked')

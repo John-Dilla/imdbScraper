@@ -8,11 +8,21 @@ import src.utility.fileHandler as f
 class Scraper:
     """This class provides the scraping methods."""
     def __init__(self) -> None:
+        """Initializes the Scraper.
+        """
         self._headers = {'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0',
                         'accept-language': 'en-US'}
                         #'accept-language': 'de-DE'}
 
-    def getTopActors(self, url: str):
+    def getTopActors(self, url: str) -> list:
+        """Function to receive 
+
+        Args:
+            url (str): [description]
+
+        Returns:
+            listTop50 (list): [description]
+        """
         r = requests.get(url, headers = self._headers)
         soup = BeautifulSoup(r.text, 'html.parser')
         list = soup.find_all("h3",{"class": "lister-item-header"})
