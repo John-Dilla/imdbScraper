@@ -259,6 +259,7 @@ class Scraper:
                 else:
                     # for cosmetic reasons - if existing - the extended summary is excluded from the plot
                     plot = plot.replace("See full summary\xa0»", "")
+                    plot = plot.replace("See full synopsis\xa0»", "")
             else:
                 plot = None
 
