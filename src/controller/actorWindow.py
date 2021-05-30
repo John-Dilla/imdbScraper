@@ -105,11 +105,18 @@ class Actor(QWidget):
         #plot = table column 8
         self.moviePlot.setVisible(False)
         self.moviePlot.setReadOnly(True)
-        self.tableMovies.clicked.connect(self._showPlot)
 
-    def _showPlot(self, clickedIndex):
-        row=clickedIndex.row()
-        model=clickedIndex.model()
+        # Reacts on all table selection changes
+        self.tableMovies.selectionModel().selectionChanged.connect(self._showPlot)
+
+    def _showPlot(self):
+        """
+        """
+        # Use model
+        model = self.tableMovies.model()
+        # Get first selected row
+        row = self.tableMovies.selectedIndexes()[0].row()
+
         if not pd.isnull(model._df.iloc[row]["Plot"]):
             plot = model._df.iloc[row]["Plot"]
             self.moviePlot.setText(plot)
