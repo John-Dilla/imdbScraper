@@ -7,7 +7,17 @@ import src.utility.fileHandler as io
 
 
 class About(QDialog):
+    """Class for the dialog box about window.
+    Shows basic information 
+
+    Args:
+        QDialog (QDialog): The Qt-Class from which this class inherites.
+    """
+
     def __init__(self):
+        """Initializes the window and shows it to the user.
+        """
+
         super().__init__()
         
         self.setWindowTitle("About Me")

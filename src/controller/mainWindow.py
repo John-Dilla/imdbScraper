@@ -11,7 +11,16 @@ from src.controller.aboutWindow import About
 import src.utility.fileHandler as io
 
 class MainWindow(QtWidgets.QMainWindow):
+    """The class to show the main window.
+
+    Args:
+        QtWidgets (QtWidgets.QMainWindow): The type of the window.
+    """
+
     def __init__(self):
+        """Initializes the main window.
+        """
+
         super().__init__()  
         self._url = "https://www.imdb.com/list/ls053501318/"
         self._imdbScraper = Controller(self._url)
@@ -44,7 +53,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actionReload.triggered.connect(self._fillTable)
         self.actionAbout.triggered.connect(self._showAbout)
 
-    def _fillTable(self):
+    def _fillTable(self) -> None:
+        """Private method to fill the table with the top 50 list.
+        """
+
         try:
             df = io.getTable("", "top50")
         except OSError:
@@ -63,11 +75,13 @@ class MainWindow(QtWidgets.QMainWindow):
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
 
-    #def _scrape(self) -> None:
-        #print("click worked")
-        #self._imdbScraper.structure()
+    def _showActor(self, clickedIndex) -> None:
+        """Private method to show the actor window of the clicked index.
 
-    def _showActor(self, clickedIndex):
+        Args:
+            clickedIndex (int): The index of the row which is clicked.
+        """
+
         # Retrieve the id of the selected actress or actor
         row=clickedIndex.row()
         model=clickedIndex.model()
@@ -80,14 +94,23 @@ class MainWindow(QtWidgets.QMainWindow):
         self._newWindow.setWindowTitle(name)
         self._newWindow.setWindowIcon(QtGui.QIcon(self._pathIcon))
 
-    def _showAbout(self):
+    def _showAbout(self) -> None:
+        """Private method to show the about dialog.
+        """
+
         self._aboutWindow = About()
         self._aboutWindow.setWindowIcon(QtGui.QIcon(self._pathIcon))
 
-    def _exitApp(self):
+    def _exitApp(self) -> None:
+        """Private method to shut down the application.
+        """
+
         sys.exit()
 
-    def _showDialogProgress(self):
+    def _showDialogProgress(self) -> None:
+        """Private method to show the dialog of the scraping process.
+        """
+
         # todo
         print("Scrape process window")
         self._dialogWindow = ScrapeDialog(self._imdbScraper)

@@ -1,3 +1,4 @@
+from pandas.core.frame import DataFrame
 import requests
 import re
 import pandas as pd
@@ -15,13 +16,13 @@ class Scraper:
                         #'accept-language': 'de-DE'}
 
     def getTopActors(self, url: str) -> list:
-        """Function to receive 
+        """Function to receive the top 50 list of all actor and actresses.
 
         Args:
-            url (str): [description]
+            url (str): The URL to the list as a string.
 
         Returns:
-            listTop50 (list): [description]
+            listTop50 (list): The list of all 50 entries
         """
         r = requests.get(url, headers = self._headers)
         soup = BeautifulSoup(r.text, 'html.parser')
@@ -41,7 +42,14 @@ class Scraper:
         f.writeToDirectory("", "top50", dataFrame)
         return listTop50
 
-    def getBio(self, actorID: str):
+    def getBio(self, actorID: str) -> None:
+        """Crawls for information of the biography of a specific actor or actress.
+        The scraped biography gets stored in the local database.
+
+        Args:
+            actorID (str): The IMDB-ID of an actor or actress.
+        """
+
         url = "https://www.imdb.com/name/" + actorID + "/bio?ref_=nm_ov_bio_sm"
         r = requests.get(url, headers = self._headers)
         soup = BeautifulSoup(r.text, 'html.parser')
@@ -105,7 +113,13 @@ class Scraper:
         dataFrame = pd.DataFrame(listBio)
         f.writeToDirectory("biography", actorID, dataFrame)
 
-    def getAwards(self, actorID: str):
+    def getAwards(self, actorID: str) -> None:
+        """Crawls for information of the awards of a specific actor or actress.
+        The scraped award list gets stored in the local database.
+
+        Args:
+            actorID (str): The IMDB-ID of an actor or actress.
+        """
         url = "https://www.imdb.com/name/" + actorID + "/awards?ref_=nm_ql_2"
         r = requests.get(url, headers = self._headers)
         soup = BeautifulSoup(r.text, 'html.parser')
@@ -160,7 +174,14 @@ class Scraper:
         dataFrame = pd.DataFrame(listAwards)
         f.writeToDirectory("awards", actorID, dataFrame)
 
-    def getGenres(self, actorID: str):
+    def getGenres(self, actorID: str) -> None:
+        """Crawls for information of the involved genres throughout the movie
+        history of a specific actor or actress.
+        The scraped biography gets stored in the local database.
+
+        Args:
+            actorID (str): The IMDB-ID of an actor or actress.
+        """
         url = "https://www.imdb.com/filmosearch/?explore=title_type&role=" + actorID + "&ref_=nm_flmg_shw_3&sort=year,desc&mode=detail&page=1"
         r = requests.get(url, headers = self._headers)
         soup = BeautifulSoup(r.text, 'html.parser')
@@ -181,6 +202,14 @@ class Scraper:
         f.writeToDirectory("filmography", "genre_"+actorID, dataFrame)    
 
     def getFilmography(self, actorID: str):
+        """This method handles the crawling process of the filmography of an actor or actress.
+        It structurizes the calls by firstly, gathering the pages (_getPages())
+        and secondly, actually scrapes the information about the movies for
+        each html page.
+
+        Args:
+            actorID (str): The IMDB-ID of an actor or actress.
+        """
         #urlFilmographyAll is for scraping every imdb entry an actor/actress has
         #urlFilmographyAll = "&ref_=nm_flmg_shw_3&sort=user_rating,desc&mode=detail&page=1"
         urlFilmography = "&ref_=filmo_ref_typ&mode=detail&page=1&title_type=movie%2CtvMovie&sort=user_rating,desc"
@@ -197,7 +226,19 @@ class Scraper:
         dataFrame = pd.DataFrame(listFilmography)
         f.writeToDirectory("filmography", actorID, dataFrame)
 
-    def _getPages(self, url, listOfUrls):
+    def _getPages(self, url: str, listOfUrls) -> list:
+        """Private method belongs to getFilmography().
+        This method retrieves recursively through every html page 
+        and appends them to a list.
+
+        Args:
+            url (str): The first page of the filmography aka the starting point.
+            listOfUrls (list): The list which contains the URL for every found page.
+
+        Returns:
+            list: A list which contains all HMTL pages which were found during the process.
+        """
+
         r = requests.get(url, headers = self._headers)
         soup = BeautifulSoup(r.text, 'html.parser')
 
@@ -212,7 +253,18 @@ class Scraper:
             return listOfUrls
 
 
-    def _getFilmography(self, url: str):
+    def _getFilmography(self, url: str) -> list:
+        """Private method, called by getFilmography(), which 
+        scrapes for all movies on the passed URL.
+
+        Args:
+            url (str): The url of the page, which is scraped.
+
+        Returns:
+            listFilmography (list): A list of all movies, which were 
+            found on the given page.
+        """
+
         r = requests.get(url, headers = self._headers)
         soup = BeautifulSoup(r.text, 'html.parser')
 
@@ -280,7 +332,13 @@ class Scraper:
 
         return listFilmography
 
-    def getPictures(self, actorID: str):
+    def getPictures(self, actorID: str) -> None:
+        """Retrieves the URL of the profile picture of the passed actor or actress.
+        Found URL gets passed on to the function writeProfilepicture().
+
+        Args:
+            actorID (str): The IMDB-ID of an actor or actress.
+        """
         url = "https://www.imdb.com/name/" + actorID
         r = requests.get(url, headers = self._headers)
         soup = BeautifulSoup(r.text, 'html.parser')
