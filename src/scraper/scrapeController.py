@@ -26,7 +26,7 @@ class Controller:
         print("TOP 50 gets scraped")
         self._scraper.getTopActors(self._topUrl)
 
-    def structure(self) -> None:
+    def structure(self, progressCallback=None) -> None:
         """Structurizes the call of each scraping method.
         Retrieves every information on each entry in the top 50 list.
         """
@@ -35,14 +35,44 @@ class Controller:
         # Time stopped to track performance.
         start_time = time.time()
 
+        totalCount = 1 + (len(listTopFifty) * 5)
+        scrapeItems = 1
+
+        if progressCallback:
+            progressCallback(scrapeItems / totalCount * 100)
+
         # Scrape all information of each entry.
         for x in listTopFifty:
             print("ID:",x["ID"],"Name:",x["Name"])
             self._scraper.getBio(x["ID"])
+            scrapeItems = scrapeItems + 1
+
+            if progressCallback:
+                progressCallback(scrapeItems / totalCount * 100)
+                
             self._scraper.getFilmography(x["ID"])
+            scrapeItems = scrapeItems + 1
+
+            if progressCallback:
+                progressCallback(scrapeItems / totalCount * 100)
+
             self._scraper.getAwards(x["ID"])
+            scrapeItems = scrapeItems + 1
+
+            if progressCallback:
+                progressCallback(scrapeItems / totalCount * 100)
+
             self._scraper.getGenres(x["ID"])
+            scrapeItems = scrapeItems + 1
+
+            if progressCallback:
+                progressCallback(scrapeItems / totalCount * 100)
+
             self._scraper.getPictures(x["ID"])
+            scrapeItems = scrapeItems + 1
+
+            if progressCallback:
+                progressCallback(scrapeItems / totalCount * 100)
 
         # Duration of a all the scraping processes
         duration = time.time() - start_time
