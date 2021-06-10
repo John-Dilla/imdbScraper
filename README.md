@@ -21,7 +21,9 @@ The project also has the ability to scrape for every single entry an actor or ac
 
 ## Requirements
 Please make sure that following packages are installed:
-- pandas: '''pip3 install pandas'''
-'''pip3 install pandas'''
+- pandas: ```pip3 install pandas```
+
+
+```pip3 install pandas```
 
 ## How to use the project
