@@ -21,9 +21,9 @@ class PandasModel(QtCore.QAbstractTableModel):
         """Defines the header data.
 
         Args:
-            section (): [description]
+            section (): The secton in the dataframe.
             orientation (): The orientation of the header.
-            role (optional): [description]. Defaults to QtCore.Qt.DisplayRole.
+            role (optional): Defaults to QtCore.Qt.DisplayRole.
 
         Returns:
             : Returns, based on orientation, the indices.
