@@ -1,4 +1,4 @@
-# IMDB Scraper
+# IMDB Scraper by Bernhard Rippich
 <b>Scraping top actors and actresses from IMDB including information about:</b>
 - Biography
 - Filmography
@@ -17,13 +17,12 @@ This project is built with:
 ### Features
 The project also has the ability to scrape for every single entry an actor or actress has. Including every single episode one has participated in as well as forthcoming series or movies.
 
-### How to use the scraper
+### Start the Application
 
 ## Requirements
 Please make sure that following packages are installed:
 - pandas: ```pip3 install pandas```
-
-
-```pip3 install pandas```
+- pyqt5: ```pip3 install pyqt5```
+- beautifulsoup: ```pip3 install bs4```
 
 ## How to use the project
