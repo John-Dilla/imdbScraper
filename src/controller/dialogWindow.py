@@ -9,10 +9,18 @@ import src.utility.fileHandler as io
 
 
 class ScrapeThread(QtCore.QThread):
+    """This class is the thread for any non UI work. It also sends signals.
+    """
+
     finished = QtCore.pyqtSignal()
     progress = QtCore.pyqtSignal(int)
 
     def __init__(self, scraper):
+        """Initializes the class.
+
+        Args:
+            scraper (Controller): The instance of the Controller
+        """
         super().__init__()
         self._imdbScraper = scraper
 
@@ -53,6 +61,9 @@ class ScrapeDialog(QDialog):
         self.show()
 
     def _scrapeFinished(self):
+        """When finished this method reenables the button again.
+        """
+
         self._backgroundTask = None
         self.buttonBeginScraping.setEnabled(True)
 

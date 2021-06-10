@@ -4,7 +4,6 @@
 - Filmography
 - Ratings
 - Awards
-- Genres
 
 ## Motivation
 I developed this project throughout the course "Applied Data Science with Python", with which I aim to get better in the field of data sciene in Python.
@@ -21,5 +20,7 @@ The project also has the ability to scrape for every single entry an actor or ac
 ### How to use the scraper
 
 ## Requirements
+Please make sure that following packages are installed:
+- pandas '''pip3 install pandas'''
 
 ## How to use the project
