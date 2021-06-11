@@ -82,7 +82,14 @@ def getTable(folder: str, fileName: str) -> DataFrame:
         dataframe['Rating'] = dataframe['Rating'].astype('float')
     if 'Ranking' in dataframe.columns:
         dataframe['Ranking'] = dataframe['Ranking'].astype('Int64')
+    # Convert NaN entries to an empty string
+    if 'Certificate' in dataframe.columns:
+        dataframe['Certificate'] = dataframe['Certificate'].fillna('')
+        dataframe['Runtime'] = dataframe['Runtime'].fillna('')
+    if 'Description' in dataframe.columns:
+        dataframe['Description'] = dataframe['Description'].fillna('')
     return dataframe
+
 
 def getUIPath(absolutePath: str, uiFile: str) -> str:
     """The utility method to construct the path to a UI file. 
